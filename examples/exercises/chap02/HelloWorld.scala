@@ -1,4 +1,4 @@
-package exercises
+//package exercises
 
 import com.cra.figaro.language.{Flip, Select}			//#A
 import com.cra.figaro.library.compound.If				//#A
@@ -42,3 +42,4 @@ object HelloWorldFigaro {
   }
 }
 
+//HelloWorldFigaro.main(args)

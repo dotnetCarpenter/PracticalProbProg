@@ -1,10 +1,10 @@
-package exercises
+package chap02
 
 import com.cra.figaro.language.{Flip, Select}			//#A
 import com.cra.figaro.library.compound.If				//#A
 import com.cra.figaro.algorithm.factored.VariableElimination	//#A
 
-object HelloWorldFigaro {
+object HelloWorldFigaroBed {
   val sunnyToday = Flip(0.2)					//#B
   val greetingToday = If(sunnyToday, 				//#C
        Select(0.6 -> "Hello, world!", 0.4 -> "Howdy, universe!"),	//#C
@@ -41,3 +41,4 @@ object HelloWorldFigaro {
     learnAndPredict()						//#I
   }
 }
+

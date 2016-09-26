@@ -1,44 +1,48 @@
 package chap02
 
-import com.cra.figaro.language.{Flip, Select}			//#A
-import com.cra.figaro.library.compound.If				//#A
-import com.cra.figaro.algorithm.factored.VariableElimination	//#A
+import com.cra.figaro.language._
+import com.cra.figaro.library.compound.If			
+import com.cra.figaro.algorithm.factored.VariableElimination
 
 object HelloWorldFigaroBed {
-  val sunnyToday = Flip(0.2)					//#B
-  val greetingToday = If(sunnyToday, 				//#C
-       Select(0.6 -> "Hello, world!", 0.4 -> "Howdy, universe!"),	//#C
-       Select(0.2 -> "Hello, world!", 0.8 -> "Oh no, not again"))	//#C
-  val sunnyTomorrow = If(sunnyToday, Flip(0.8), Flip(0.05))	//#D
-  val greetingTomorrow = If(sunnyTomorrow,				//#E
-       Select(0.5 -> "Hello, world!", 0.5 -> "Howdy, universe!"),	//#E
-       Select(0.1 -> "Hello, world!", 0.9 -> "Oh no, not again"))	//#E
+	val sideOfBed = Apply(Flip(0.5), (b:Boolean) => if(b) "right"; else "wrong")
+	val sunnyToday = Flip(0.2)				
+	/*sunnyToday.setCondition(Chain(sideOfBed, (s: String) =>
+		if(s == "wrong") Flip(0.0)
+		else Flip(0.2))
+	)*/
+	val greetingToday = If(sunnyToday, 			
+		Select(0.6 -> "Hello, world!", 0.4 -> "Howdy, universe!"),
+		Select(0.2 -> "Hello, world!", 0.8 -> "Oh no, not again"))
+	val sunnyTomorrow = If(sunnyToday, Flip(0.8), Flip(0.05))
+	val greetingTomorrow = If(sunnyTomorrow,			
+		Select(0.5 -> "Hello, world!", 0.5 -> "Howdy, universe!"),
+		Select(0.1 -> "Hello, world!", 0.9 -> "Oh no, not again"))
 
-  def predict() {
-    val result = VariableElimination.probability(greetingToday, "Hello, world!") // #F
-    println("Today's greeting is \"Hello, world!\" " +
-            "with probability " + result + ".")			//#G
-  }
+	def predict() {
+	val result = VariableElimination.probability(greetingToday, "Hello, world!") // #F
+	println("Today's greeting is \"Hello, world!\" " +
+			"with probability " + result + ".")		
+	}
 
-  def infer() {
-    greetingToday.observe("Hello, world!")				//#H
-    val result = VariableElimination.probability(sunnyToday, true)		//#F
-    println("If today's greeting is \"Hello, world!\", today's " +
-            "weather is sunny with probability " + result + ".")	//#G
-  }
+	def infer() {
+	greetingToday.observe("Hello, world!")			
+	val result = VariableElimination.probability(sunnyToday, true)	
+	println("If today's greeting is \"Hello, world!\", today's " +
+			"weather is sunny with probability " + result + ".")
+	}
 
-  def learnAndPredict() {
-    val result = 
-      VariableElimination.probability(greetingTomorrow, "Hello, world!")	//#F
-    println("If today's greeting is \"Hello, world!\", " +		                               
-            "tomorrow's greeting will be \"Hello, world!\" " +
-            "with probability " + result + ".")			//#G
-  }
-  
-  def main(args: Array[String]) {					//#I
-    predict()							//#I
-    infer()								//#I
-    learnAndPredict()						//#I
-  }
+	def learnAndPredict() {
+	val result = 
+		VariableElimination.probability(greetingTomorrow, "Hello, world!")
+	println("If today's greeting is \"Hello, world!\", " +		                               
+			"tomorrow's greeting will be \"Hello, world!\" " +
+			"with probability " + result + ".")		
+	}
+	
+	def main(args: Array[String]) {				
+	predict()						
+	infer()							
+	learnAndPredict()					
+	}
 }
-

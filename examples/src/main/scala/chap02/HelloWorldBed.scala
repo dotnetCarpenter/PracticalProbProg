@@ -37,6 +37,12 @@ object HelloWorldFigaroBed {
 			"Howdy, universe! greeting tomorrow is " + VariableElimination.probability(greetingTomorrow, "Howdy, universe!") + "\n" +
 			"Oh no, not again greeting tomorrow is " + VariableElimination.probability(greetingTomorrow, "Oh no, not again"))
 
+		greetingToday.observe("Oh no, not again")
+		val result = VariableElimination.probability(sunnyToday, true)
+		println("If today's greeting is \"Oh no, not again\", today's " +
+						"weather is sunny with probability " + result + ".")
+		greetingToday.unobserve()
+
 		greetingToday.observe("Hello, world!")
 		val helloWorld1 = VariableElimination.probability(greetingTomorrow, "Hello, world!")
 		println("If today's greeting is \"Hello, world!\", " +
